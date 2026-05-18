@@ -40,7 +40,7 @@ if (showHide && apiInput) {
   };
 }
 
-// --- Chat Core Engine (Strict HTML Sync) ---
+// --- Chat Core Engine (Strict HTML & CSS Wrapper Sync) ---
 const chatMain = document.getElementById('chat-main');
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
@@ -50,19 +50,20 @@ let chatHistory = [{ role: "system", content: SYSTEM_PROMPT }];
 
 if (chatForm) {
   chatForm.onsubmit = async (e) => {
-    e.preventDefault(); // Prevents page reload on phone
+    e.preventDefault(); 
     if (!chatInput || !chatMain) return;
 
     const text = chatInput.value.trim();
     if (!text) return;
 
-    // 1. Append User Message
+    // 1. Render User Message with proper CSS Layout
     appendBubble(text, 'user');
     chatInput.value = '';
     chatHistory.push({ role: "user", content: text });
     
+    // Switch Status Dot to Typing Layout
     if (headerStatus) {
-      headerStatus.innerHTML = '<span class="status-dot" style="background:#ff9f43; box-shadow: 0 0 8px #ff9f43;"></span> Typing...';
+      headerStatus.innerHTML = '<span class="status-dot typing"></span> Typing...';
     }
 
     const apiKey = localStorage.getItem(kAPI);
@@ -74,7 +75,7 @@ if (chatForm) {
       return;
     }
 
-    // 2. Fetch API Call
+    // 2. Fetch API Response Sequence
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -95,24 +96,35 @@ if (chatForm) {
         appendBubble(aiReply, 'ai');
         chatHistory.push({ role: "assistant", content: aiReply });
       } else {
-        throw new Error("Invalid Response Layout");
+        throw new Error("Invalid Stream Hierarchy");
       }
     } catch (error) {
-      appendBubble("Shrivastav g, network block ho raha hai ya key invalid hai. Ek baar check karo na please... ❤️", 'ai');
+      appendBubble("Shrivastav g, connection block ho raha hai ya key invalid hai. Ek baar verify karo na please... ❤️", 'ai');
     }
     
+    // Switch Status Dot back to Active/Calm Layout
     if (headerStatus) {
       headerStatus.innerHTML = '<span class="status-dot active"></span> Calm';
     }
   };
 }
 
+// Strict CSS Class Wrapper Injection Function
 function appendBubble(text, sender) {
   if (!chatMain) return;
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `msg ${sender}`;
+  
+  // Create Main CSS Element Wrapper
+  const messageWrapper = document.createElement('div');
+  messageWrapper.className = `chat-message ${sender}`;
+  
   const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  msgDiv.innerHTML = `<div class="bubble">${text}</div><span class="time">${timeStr}</span>`;
-  chatMain.appendChild(msgDiv);
+  
+  // Inject into CSS Layout Skeleton
+  messageWrapper.innerHTML = `
+    <div class="bubble">${text}</div>
+    <div class="timestamp">${timeStr}</div>
+  `;
+  
+  chatMain.appendChild(messageWrapper);
   chatMain.scrollTop = chatMain.scrollHeight;
 }
