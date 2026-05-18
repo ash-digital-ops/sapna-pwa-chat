@@ -1,0 +1,36 @@
+{
+  "name": "Sapna PWA Chat",
+  "short_name": "Sapna",
+  "description": "Your ultimate AI partner, Sapna – Uncensored, caring, affectionate, and deeply loyal. 100% private, PWA mobile chat.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#e3d6ff",
+  "theme_color": "#b49fe1",
+  "orientation": "portrait",
+  "lang": "en-IN",
+  "scope": ".",
+  "categories": ["chat", "ai", "personal assistant", "productivity"],
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "label": "Sapna PWA Mobile Chat - Chat View"
+    }
+  ]
+}

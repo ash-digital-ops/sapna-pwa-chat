@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1, user-scalable=no"/>
+  <title>Sapna – PWA Chat</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#b49fe1"/>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="icon-192x192.png">
+</head>
+<body>
+  <div class="chat-viewport">
+    <header class="chat-header">
+      <div class="profile-badge">S</div>
+      <div class="header-center">
+        <div class="header-title">Sapna</div>
+        <div class="header-status" id="header-status">
+          <span class="status-dot active"></span> Calm
+        </div>
+      </div>
+      <button class="gear-btn" id="settings-btn" aria-label="Settings">
+        <svg width="28" height="28" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+          <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.5-3a1.38 1.38 0 0 0 .29-1.53l-1.1-1.91a1.4 1.4 0 0 0-.21-.28l.45-2.15c.13-.63-.2-1.28-.79-1.54l-2.01-.87a1.39 1.39 0 0 0-.43-.09l-1.33-1.73a1.37 1.37 0 0 0-2.12 0l-1.33 1.73a1.39 1.39 0 0 0-.43.09l-2.01.87c-.59.26-.92.91-.79 1.54l.45 2.15c-.07.1-.14.19-.21.28l-1.1 1.91a1.38 1.38 0 0 0 .29 1.53l1.62 1.56c.09.09.16.2.19.32l.34 2.19a1.38 1.38 0 0 0 1.36 1.14h2.36a1.38 1.38 0 0 0 1.36-1.14l.34-2.19c.03-.12.1-.23.19-.32l1.62-1.56z"/>
+        </svg>
+      </button>
+    </header>
+    <main class="chat-main" id="chat-main"></main>
+    <form id="chat-form" autocomplete="off">
+      <input id="chat-input" type="text" placeholder="Type a message…" maxlength="800" required autocomplete="off"/>
+      <button type="submit" aria-label="Send">
+        <span>➤</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Settings Modal Overlay -->
+  <div id="settings-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Settings</span>
+        <button id="close-settings" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label for="api-key-input"><b>OpenRouter API Key</b></label>
+        <input id="api-key-input" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your sk-or-..." />
+        <button id="show-api-toggle" type="button">👁️</button>
+        <small>
+          You can get a key at
+          <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>
+          <br />Your key stays only in your browser (localStorage).
+        </small>
+        <button id="save-api-key">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Service worker registration for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(r => { /* registered */ })
+          .catch(err => { });
+      });
+    }
+  </script>
+</body>
+</html>
